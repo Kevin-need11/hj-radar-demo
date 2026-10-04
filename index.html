@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>好厝人脈雷達（範例）</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#1a1d24; --card2:#222631; --line:#2b303b;
+    --text:#e8eaed; --muted:#9aa0aa; --accent:#4f8cff; --accent2:#2dd4a7;
+    --ask:#ffb454;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,"PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+    line-height:1.55;}
+  header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#0f1115 70%,rgba(15,17,21,0));
+    padding:18px 16px 10px;}
+  h1{margin:0 0 2px;font-size:20px;}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:12px;}
+  .searchbox{position:relative;}
+  #q{width:100%;padding:14px 44px 14px 16px;font-size:17px;border-radius:14px;
+    border:1px solid var(--line);background:var(--card);color:var(--text);outline:none;}
+  #q:focus{border-color:var(--accent);}
+  .clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);
+    width:28px;height:28px;border:none;border-radius:50%;background:var(--card2);
+    color:var(--muted);font-size:16px;cursor:pointer;display:none;}
+  .chips{display:flex;gap:8px;overflow-x:auto;padding:12px 2px 2px;scrollbar-width:none;}
+  .chips::-webkit-scrollbar{display:none;}
+  .chip{white-space:nowrap;padding:7px 13px;border-radius:999px;border:1px solid var(--line);
+    background:var(--card);color:var(--text);font-size:14px;cursor:pointer;}
+  .chip:active{background:var(--accent);border-color:var(--accent);}
+  .count{color:var(--muted);font-size:13px;padding:4px 16px 0;}
+  main{padding:8px 12px 60px;display:grid;gap:12px;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));max-width:1100px;margin:0 auto;}
+  .person{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;}
+  .ptop{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+  .pname{font-size:18px;font-weight:700;}
+  .pno{color:var(--muted);font-size:12px;background:var(--card2);padding:2px 8px;border-radius:8px;}
+  .ptitle{color:var(--accent2);font-size:14px;margin:3px 0 2px;font-weight:600;}
+  .pco{color:var(--muted);font-size:13px;}
+  .sec{margin-top:11px;}
+  .lbl{font-size:12px;color:var(--muted);margin-bottom:3px;}
+  .offer li{margin:1px 0;}
+  ul{margin:0;padding-left:18px;font-size:14px;}
+  .ask{color:var(--ask);}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px;}
+  .tag{font-size:12px;color:var(--muted);background:var(--card2);padding:3px 9px;border-radius:7px;}
+  .note{margin-top:11px;background:#15241f;border:1px solid #1f4036;border-radius:10px;
+    padding:9px 11px;font-size:13px;color:#bfe8d8;}
+  .note .nl{color:#5fd0a8;font-size:11px;display:block;margin-bottom:2px;}
+  .contact{margin-top:10px;font-size:13px;color:var(--muted);}
+  .contact b{color:var(--text);font-weight:600;}
+  .empty{text-align:center;color:var(--muted);padding:40px 20px;grid-column:1/-1;}
+  .empty b{color:var(--text);}
+  .foot{grid-column:1/-1;text-align:center;color:#636975;font-size:12px;margin-top:10px;}
+  mark{background:var(--accent);color:#fff;border-radius:3px;padding:0 2px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>好厝人脈雷達 <span style="font-size:13px;color:var(--ask);font-weight:400;">範例</span></h1>
+  <div class="sub">打一個詞（職業／需求），馬上找到章節裡誰能幫你。例：違建、水電、驗屋、律師</div>
+  <div class="searchbox">
+    <input id="q" type="text" placeholder="你需要什麼？輸入看看…" autocomplete="off">
+    <button class="clear" id="clear">×</button>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="count" id="count"></div>
+</header>
+<main id="list"></main>
+
+<script>
+// ===== 範例資料：取自「BNI 華地產個人簡報－依產業鏈分組」18 位會員 =====
+const PEOPLE = [
+ {no:"097",name:"顏敏哲",title:"建築執照顧問 / 違建處理",co:"禾域建築",
+  offer:["建築物合法變更、裝修及執照審查取得（1600+ 案）","套雅房合法裝修合格證（300+ 案）","建築執照、法令免費諮詢","違建列管／報拆判斷諮詢"],
+  ask:"長期合作的設計公司、裝修公司、資產管理公司、建設公司",
+  tags:["建築師","建築","執照","違建","報拆","列管","變更","使用執照","套雅房","合法","法規","拆除申請"],
+  note:"2026/09 商務分享：違建要看年份、位置、規模、態樣、公安危害程度，各縣市規定不同不可一概而論。客戶有違建問題第一個找他。"},
+
+ {no:"063",name:"王勝仟",title:"水電工程",co:"勝曜有限公司",
+  offer:["配電箱／分路設計、漏電斷路器","老屋全室電線汰換、佈線","給排水、衛浴設備安裝","冷氣安裝、修繕"],
+  ask:"租屋代管、老屋翻修、室內設計師、裝潢統包商",
+  tags:["水電","電工","配電","漏電","跳電","插座","開關","排水","馬桶","通管","水管","電線","老屋"],
+  note:""},
+
+ {no:"078",name:"林裕翔 Shawn",title:"冷氣安裝保養維修－雙北",co:"聖芯工程有限公司",
+  offer:["冷暖氣、全熱交換器、吊隱式除濕機","壁掛／吊隱式冷氣安裝保養","商空多聯式 VRV／VRF 冷氣","全廠牌服務（日立、華菱等）"],
+  ask:"室內設計師、建設公司、統包工程；營業單位大量安裝／定期保養",
+  tags:["冷氣","空調","冷暖氣","保養","維修","安裝","除濕","全熱交換","VRV"],
+  note:"案例做過商務中心多間分館、牙醫、醫美診所、包租代管。好厝案場要裝／洗冷氣優先問他。"},
+
+ {no:"017",name:"方建勛 Vincent",title:"消毒除蟲",co:"極淨環衛有限公司",
+  offer:["木材白蟻（蛀蟻）處理","定期環境消毒、鼠害防治","新裝潢屋甲醛檢測及處理","特殊蟲害處理"],
+  ask:"餐飲業、設計師、裝修師傅、包租代管業者長期配合",
+  tags:["除蟲","消毒","白蟻","蟲害","鼠害","老鼠","甲醛","除甲醛","防治","裝修前"],
+  note:""},
+
+ {no:"114",name:"簡亞芮 MOMO",title:"拆除清運－雙北",co:"咏鑫工程行",
+  offer:["新建案、老舊公寓、店面拆除","危老拆除","無塵拆除服務（研發中）"],
+  ask:"統包、設計師、屋主、危老拆除、建設公司",
+  tags:["拆除","清運","拆","打除","無塵拆除","危老拆除","清空"],
+  note:""},
+
+ {no:"028",name:"周擇宇 Fennix",title:"系統櫃（台灣中部）",co:"開箱子系統家居",
+  offer:["全屋系統櫃定製設計、統包工程","住家、商業空間、廠辦統包","室內裝修工程管理乙級"],
+  ask:"室內設計師、裝修統包商、建築師、新建案社區團購",
+  tags:["系統櫃","櫃","木作","系統家具","統包","客製","收納"],
+  note:""},
+
+ {no:"004",name:"黃齡毅 Melody",title:"雙北軟裝設計",co:"星毅設計股份有限公司",
+  offer:["住宅與商空整體軟裝規劃","空屋軟裝提升銷售／出租價值（如 Airbnb）","品牌風格陳列（展場、店面、快閃）"],
+  ask:"剛買房輕裝修屋主、房產投資客／包租代管業者",
+  tags:["軟裝","軟裝設計","佈置","陳列","出租佈置","Airbnb","空屋","櫥窗"],
+  note:""},
+
+ {no:"048",name:"陳逸凱 阿凱",title:"住宅室內設計－台北市",co:"時治室內裝修股份有限公司",
+  offer:["住宅設計、施工、監造、售後一站式","中大坪數豪宅、高屋齡老屋翻修","從業 21 年、150+ 家庭"],
+  ask:"剛性購屋需求者、有老屋想活化的長輩、房仲／代銷團隊",
+  tags:["室內設計","設計師","裝修","裝潢","老屋翻修","豪宅","監造","統包"],
+  note:"同名阿凱，別搞混。走高端老屋翻修，大案子／豪宅可轉介給他。"},
+
+ {no:"045",name:"何欣哲 Cliff",title:"新成屋輕裝修－北北桃",co:"序物制所有限公司",
+  offer:["50–150 萬新成屋輕裝修專案規劃","10 年+ 室內設計與工程管理","AI × SOP × 數位管理裝修流程"],
+  ask:"快交屋有裝修需求屋主、建案／社區團購裝修",
+  tags:["輕裝修","新成屋","裝修","裝潢","交屋","工程管理"],
+  note:""},
+
+ {no:"109",name:"顏羽宏 Allen",title:"照明設備",co:"展晟照明（舞光 LED）",
+  offer:["照明規劃、選品到現場測試","商業、居家、工廠、戶外照明","約 5000 種常態庫存品項"],
+  ask:"有照明需求的設計師、統包、業主；照明批發業者",
+  tags:["照明","燈","燈具","LED","軌道燈","舞光","光源"],
+  note:""},
+
+ {no:"103",name:"左沁靈 Sharing",title:"磁磚建材",co:"神銀建材資訊有限公司",
+  offer:["磁磚 SPC 最高 CP 值團購價","建案／公共工程建材配套","AI 智慧選材系統"],
+  ask:"建商、營造、室內設計師、包租代管有磁磚建材需求",
+  tags:["磁磚","建材","SPC","瓷磚","地磚","壁磚","選材"],
+  note:""},
+
+ {no:"111",name:"郭哲宇 Brian",title:"房屋科技檢驗（驗屋）－北部",co:"沂樂生活科技有限公司",
+  offer:["預售屋、新成屋、中古屋、廠辦驗屋","房屋各項細節檢查","服務 2000+ 屋主"],
+  ask:"有交驗屋需求的個人／設計師、代銷、銀行貸款端",
+  tags:["驗屋","檢驗","檢測","交屋","驗收","瑕疵","房屋檢查"],
+  note:""},
+
+ {no:"122",name:"鄭敦晉 Gene",title:"不動產律師－雙北",co:"敦洋法律事務所",
+  offer:["不動產民事、刑事訴訟","非訟合約、都更事業","中小企業、建設公司法律顧問"],
+  ask:"不動產民刑事案件、中小企業法律顧問、大型建設公司",
+  tags:["律師","法律","訴訟","合約","法律諮詢","糾紛","都更法律","官司"],
+  note:"客戶碰到合約糾紛、租賃／工程官司、產權問題找他。"},
+
+ {no:"124",name:"陳容禎 Celine",title:"不動產估價師",co:"都昕（都市更昕）",
+  offer:["房屋、土地、廠房、店面、辦公室估價","都更權變估價模擬試算","台北市都更權變審查委員"],
+  ask:"房仲／商仲估價合作、律師／會計師／地政士、都更建商",
+  tags:["估價","估價師","鑑價","估值","都更估價","權變","不動產估價"],
+  note:""},
+
+ {no:"039",name:"黃鈺琦 Rowan",title:"危老都更－雙北",co:"永業建築經理股份有限公司",
+  offer:["危老都更重建評估、結構評估","合建、委建全案整合興建一條龍","工程查核、履約保證、專款專用"],
+  ask:"雙北精華區可危老都更的地主及物件、整合團隊",
+  tags:["都更","危老","重建","改建","整合","地主","合建","結構評估"],
+  note:""},
+
+ {no:"110",name:"孫士閔 Steven",title:"智慧家庭規劃",co:"費米股份有限公司",
+  offer:["智慧家庭客製規劃（2000+ 客戶）","IoT 設備落地（建案、辦公室、醫院）","AIoT 物聯網平台導入"],
+  ask:"想規劃智慧家庭的設計師、業主、建案、代銷",
+  tags:["智慧家庭","智能","IoT","智慧門鎖","電子鎖","智能家居","自動化","物聯網"],
+  note:"好厝一直想研究的智慧門鎖／電子鎖，可以先找他聊方案。"},
+
+ {no:"092",name:"林典毅 Chance",title:"短影音代操盤",co:"流量製造所",
+  offer:["短影音代操、流量變現","個人／實體商家打造 IP","企業短影音內訓"],
+  ask:"需短影音投廣的電商品牌、想打造 IP 的個人或商家",
+  tags:["短影音","影片","reels","行銷","流量","自媒體","IP","拍片"],
+  note:""},
+
+ {no:"009",name:"陳書緯 Peter",title:"高資產融資 / 投資",co:"中國信託銀行",
+  offer:["房屋、土地、金融資產週轉融資","高資產客戶金融資產投資","美國證券分析師 CFA"],
+  ask:"個人／公司融資或貸款需求、專業投資人（3000 萬以上淨值）",
+  tags:["融資","貸款","房貸","資金","週轉","銀行","投資","高資產"],
+  note:""}
+];
+
+// ===== 畫面 =====
+const list=document.getElementById('list');
+const q=document.getElementById('q');
+const clearBtn=document.getElementById('clear');
+const countEl=document.getElementById('count');
+const chipsEl=document.getElementById('chips');
+const EXAMPLES=["違建","建築師","水電","冷氣","除蟲","拆除","驗屋","律師","軟裝","都更","估價","智慧門鎖","照明","磁磚"];
+
+function searchable(p){
+  return [p.no,p.name,p.title,p.co,p.offer.join(" "),p.ask,p.tags.join(" ")].join(" ").toLowerCase();
+}
+function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function hl(s,terms){
+  let out=esc(s);
+  terms.filter(t=>t).forEach(t=>{
+    const re=new RegExp("("+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+")","gi");
+    out=out.replace(re,"<mark>$1</mark>");
+  });
+  return out;
+}
+function render(){
+  const raw=q.value.trim().toLowerCase();
+  const terms=raw.split(/\s+/).filter(Boolean);
+  clearBtn.style.display=raw?"block":"none";
+  let res=PEOPLE;
+  if(terms.length){
+    res=PEOPLE.filter(p=>{const s=searchable(p);return terms.every(t=>s.includes(t));});
+  }
+  countEl.textContent = raw ? `找到 ${res.length} 位` : `章節共 ${PEOPLE.length} 位（範例）`;
+  if(!res.length){
+    list.innerHTML=`<div class="empty"><b>目前章節沒有「${esc(q.value.trim())}」這個資源</b><br>
+      正式版的阿凱會這樣回你，並建議：要不要我幫你去問章節有沒有人認識？或把這個需求記起來，有新夥伴進來就提醒你。</div>`;
+    return;
+  }
+  list.innerHTML=res.map(p=>`
+    <div class="person">
+      <div class="ptop"><span class="pname">${hl(p.name,terms)}</span><span class="pno">NO.${p.no}</span></div>
+      <div class="ptitle">${hl(p.title,terms)}</div>
+      <div class="pco">${hl(p.co,terms)}</div>
+      <div class="sec"><div class="lbl">他能提供（本週我有／專業）</div>
+        <ul class="offer">${p.offer.map(o=>`<li>${hl(o,terms)}</li>`).join("")}</ul></div>
+      <div class="sec"><div class="lbl">他在找（引薦需求）</div>
+        <div class="ask">${hl(p.ask,terms)}</div></div>
+      <div class="tags">${p.tags.map(t=>`<span class="tag">${hl(t,terms)}</span>`).join("")}</div>
+      ${p.note?`<div class="note"><span class="nl">你的 121 筆記</span>${esc(p.note)}</div>`:``}
+      <div class="contact">BNI 編號 <b>${p.no}</b> ｜ 電話 <b>（範例，正式版自動帶）</b></div>
+    </div>`).join("")+`<div class="foot">這是範例，用章節簡報真實資料做的。正式版：你用「講的」記 121、電話自動帶、可跨好厝客戶資料一起查。</div>`;
+}
+chipsEl.innerHTML=EXAMPLES.map(e=>`<button class="chip">${e}</button>`).join("");
+chipsEl.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{q.value=b.textContent;render();q.scrollIntoView({block:'start'});});
+clearBtn.onclick=()=>{q.value="";render();q.focus();};
+q.addEventListener('input',render);
+render();
+</script>
+</body>
+</html>
