@@ -3,238 +3,173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>好厝人脈雷達（範例）</title>
+<title>華地產分會 資源庫</title>
 <style>
-  :root{
-    --bg:#0f1115; --card:#1a1d24; --card2:#222631; --line:#2b303b;
-    --text:#e8eaed; --muted:#9aa0aa; --accent:#4f8cff; --accent2:#2dd4a7;
-    --ask:#ffb454;
-  }
+  :root{--bg:#0f1115;--card:#1a1d24;--card2:#222631;--line:#2b303b;--text:#e8eaed;--muted:#9aa0aa;--accent:#4f8cff;--accent2:#2dd4a7;--ask:#ffb454;}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-  body{margin:0;background:var(--bg);color:var(--text);
-    font-family:-apple-system,"PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
-    line-height:1.55;}
-  header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#0f1115 70%,rgba(15,17,21,0));
-    padding:18px 16px 10px;}
-  h1{margin:0 0 2px;font-size:20px;}
-  .sub{color:var(--muted);font-size:13px;margin-bottom:12px;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.55;}
+  header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#0f1115 72%,rgba(15,17,21,0));padding:16px 14px 8px;}
+  h1{margin:0 0 2px;font-size:19px;}
+  .sub{color:var(--muted);font-size:12px;margin-bottom:10px;}
   .searchbox{position:relative;}
-  #q{width:100%;padding:14px 44px 14px 16px;font-size:17px;border-radius:14px;
-    border:1px solid var(--line);background:var(--card);color:var(--text);outline:none;}
+  #q{width:100%;padding:13px 42px 13px 15px;font-size:16px;border-radius:13px;border:1px solid var(--line);background:var(--card);color:var(--text);outline:none;}
   #q:focus{border-color:var(--accent);}
-  .clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);
-    width:28px;height:28px;border:none;border-radius:50%;background:var(--card2);
-    color:var(--muted);font-size:16px;cursor:pointer;display:none;}
-  .chips{display:flex;gap:8px;overflow-x:auto;padding:12px 2px 2px;scrollbar-width:none;}
+  .clear{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:none;border-radius:50%;background:var(--card2);color:var(--muted);font-size:16px;cursor:pointer;display:none;}
+  .chips{display:flex;gap:7px;overflow-x:auto;padding:10px 2px 2px;scrollbar-width:none;}
   .chips::-webkit-scrollbar{display:none;}
-  .chip{white-space:nowrap;padding:7px 13px;border-radius:999px;border:1px solid var(--line);
-    background:var(--card);color:var(--text);font-size:14px;cursor:pointer;}
-  .chip:active{background:var(--accent);border-color:var(--accent);}
-  .count{color:var(--muted);font-size:13px;padding:4px 16px 0;}
-  main{padding:8px 12px 60px;display:grid;gap:12px;
-    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));max-width:1100px;margin:0 auto;}
-  .person{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;}
-  .ptop{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
-  .pname{font-size:18px;font-weight:700;}
-  .pno{color:var(--muted);font-size:12px;background:var(--card2);padding:2px 8px;border-radius:8px;}
-  .ptitle{color:var(--accent2);font-size:14px;margin:3px 0 2px;font-weight:600;}
-  .pco{color:var(--muted);font-size:13px;}
-  .sec{margin-top:11px;}
-  .lbl{font-size:12px;color:var(--muted);margin-bottom:3px;}
-  .offer li{margin:1px 0;}
-  ul{margin:0;padding-left:18px;font-size:14px;}
-  .ask{color:var(--ask);}
-  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px;}
-  .tag{font-size:12px;color:var(--muted);background:var(--card2);padding:3px 9px;border-radius:7px;}
-  .note{margin-top:11px;background:#15241f;border:1px solid #1f4036;border-radius:10px;
-    padding:9px 11px;font-size:13px;color:#bfe8d8;}
-  .note .nl{color:#5fd0a8;font-size:11px;display:block;margin-bottom:2px;}
-  .contact{margin-top:10px;font-size:13px;color:var(--muted);}
-  .contact b{color:var(--text);font-weight:600;}
+  .chip{white-space:nowrap;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:13px;cursor:pointer;}
+  .chip.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .count{color:var(--muted);font-size:12px;padding:4px 14px 0;}
+  main{padding:8px 12px 60px;display:grid;gap:11px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));max-width:1150px;margin:0 auto;}
+  .p{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px;}
+  .ptop{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;}
+  .pname{font-size:17px;font-weight:700;}
+  .pno{color:var(--muted);font-size:11px;background:var(--card2);padding:2px 7px;border-radius:7px;}
+  .pgrp{color:var(--accent);font-size:11px;background:#16233b;padding:2px 7px;border-radius:7px;}
+  .ptitle{color:var(--accent2);font-size:13.5px;margin:3px 0 1px;font-weight:600;}
+  .pco{color:var(--muted);font-size:12.5px;}
+  .sec{margin-top:9px;}
+  .lbl{font-size:11px;color:var(--muted);margin-bottom:2px;}
+  .offer{font-size:13.5px;}
+  .ask{color:var(--ask);font-size:13.5px;}
   .empty{text-align:center;color:var(--muted);padding:40px 20px;grid-column:1/-1;}
-  .empty b{color:var(--text);}
-  .foot{grid-column:1/-1;text-align:center;color:#636975;font-size:12px;margin-top:10px;}
+  .foot{grid-column:1/-1;text-align:center;color:#636975;font-size:11px;margin-top:8px;line-height:1.7;}
   mark{background:var(--accent);color:#fff;border-radius:3px;padding:0 2px;}
 </style>
 </head>
 <body>
 <header>
-  <h1>好厝人脈雷達 <span style="font-size:13px;color:var(--ask);font-weight:400;">範例</span></h1>
-  <div class="sub">打一個詞（職業／需求），馬上找到章節裡誰能幫你。例：違建、水電、驗屋、律師</div>
-  <div class="searchbox">
-    <input id="q" type="text" placeholder="你需要什麼？輸入看看…" autocomplete="off">
-    <button class="clear" id="clear">×</button>
-  </div>
+  <h1>華地產分會 資源庫</h1>
+  <div class="sub">打一個詞找資源（職業／服務／需求），或點產業鏈分組。例：水電、驗屋、法拍、都更、律師、軟裝</div>
+  <div class="searchbox"><input id="q" type="text" placeholder="要找什麼資源？輸入看看…" autocomplete="off"><button class="clear" id="clear">×</button></div>
   <div class="chips" id="chips"></div>
   <div class="count" id="count"></div>
 </header>
 <main id="list"></main>
-
 <script>
-// ===== 範例資料：取自「BNI 華地產個人簡報－依產業鏈分組」18 位會員 =====
-const PEOPLE = [
- {no:"097",name:"顏敏哲",title:"建築執照顧問 / 違建處理",co:"禾域建築",
-  offer:["建築物合法變更、裝修及執照審查取得（1600+ 案）","套雅房合法裝修合格證（300+ 案）","建築執照、法令免費諮詢","違建列管／報拆判斷諮詢"],
-  ask:"長期合作的設計公司、裝修公司、資產管理公司、建設公司",
-  tags:["建築師","建築","執照","違建","報拆","列管","變更","使用執照","套雅房","合法","法規","拆除申請"],
-  note:"2026/09 商務分享：違建要看年份、位置、規模、態樣、公安危害程度，各縣市規定不同不可一概而論。客戶有違建問題第一個找他。"},
-
- {no:"063",name:"王勝仟",title:"水電工程",co:"勝曜有限公司",
-  offer:["配電箱／分路設計、漏電斷路器","老屋全室電線汰換、佈線","給排水、衛浴設備安裝","冷氣安裝、修繕"],
-  ask:"租屋代管、老屋翻修、室內設計師、裝潢統包商",
-  tags:["水電","電工","配電","漏電","跳電","插座","開關","排水","馬桶","通管","水管","電線","老屋"],
-  note:""},
-
- {no:"078",name:"林裕翔 Shawn",title:"冷氣安裝保養維修－雙北",co:"聖芯工程有限公司",
-  offer:["冷暖氣、全熱交換器、吊隱式除濕機","壁掛／吊隱式冷氣安裝保養","商空多聯式 VRV／VRF 冷氣","全廠牌服務（日立、華菱等）"],
-  ask:"室內設計師、建設公司、統包工程；營業單位大量安裝／定期保養",
-  tags:["冷氣","空調","冷暖氣","保養","維修","安裝","除濕","全熱交換","VRV"],
-  note:"案例做過商務中心多間分館、牙醫、醫美診所、包租代管。好厝案場要裝／洗冷氣優先問他。"},
-
- {no:"017",name:"方建勛 Vincent",title:"消毒除蟲",co:"極淨環衛有限公司",
-  offer:["木材白蟻（蛀蟻）處理","定期環境消毒、鼠害防治","新裝潢屋甲醛檢測及處理","特殊蟲害處理"],
-  ask:"餐飲業、設計師、裝修師傅、包租代管業者長期配合",
-  tags:["除蟲","消毒","白蟻","蟲害","鼠害","老鼠","甲醛","除甲醛","防治","裝修前"],
-  note:""},
-
- {no:"114",name:"簡亞芮 MOMO",title:"拆除清運－雙北",co:"咏鑫工程行",
-  offer:["新建案、老舊公寓、店面拆除","危老拆除","無塵拆除服務（研發中）"],
-  ask:"統包、設計師、屋主、危老拆除、建設公司",
-  tags:["拆除","清運","拆","打除","無塵拆除","危老拆除","清空"],
-  note:""},
-
- {no:"028",name:"周擇宇 Fennix",title:"系統櫃（台灣中部）",co:"開箱子系統家居",
-  offer:["全屋系統櫃定製設計、統包工程","住家、商業空間、廠辦統包","室內裝修工程管理乙級"],
-  ask:"室內設計師、裝修統包商、建築師、新建案社區團購",
-  tags:["系統櫃","櫃","木作","系統家具","統包","客製","收納"],
-  note:""},
-
- {no:"004",name:"黃齡毅 Melody",title:"雙北軟裝設計",co:"星毅設計股份有限公司",
-  offer:["住宅與商空整體軟裝規劃","空屋軟裝提升銷售／出租價值（如 Airbnb）","品牌風格陳列（展場、店面、快閃）"],
-  ask:"剛買房輕裝修屋主、房產投資客／包租代管業者",
-  tags:["軟裝","軟裝設計","佈置","陳列","出租佈置","Airbnb","空屋","櫥窗"],
-  note:""},
-
- {no:"048",name:"陳逸凱 阿凱",title:"住宅室內設計－台北市",co:"時治室內裝修股份有限公司",
-  offer:["住宅設計、施工、監造、售後一站式","中大坪數豪宅、高屋齡老屋翻修","從業 21 年、150+ 家庭"],
-  ask:"剛性購屋需求者、有老屋想活化的長輩、房仲／代銷團隊",
-  tags:["室內設計","設計師","裝修","裝潢","老屋翻修","豪宅","監造","統包"],
-  note:"同名阿凱，別搞混。走高端老屋翻修，大案子／豪宅可轉介給他。"},
-
- {no:"045",name:"何欣哲 Cliff",title:"新成屋輕裝修－北北桃",co:"序物制所有限公司",
-  offer:["50–150 萬新成屋輕裝修專案規劃","10 年+ 室內設計與工程管理","AI × SOP × 數位管理裝修流程"],
-  ask:"快交屋有裝修需求屋主、建案／社區團購裝修",
-  tags:["輕裝修","新成屋","裝修","裝潢","交屋","工程管理"],
-  note:""},
-
- {no:"109",name:"顏羽宏 Allen",title:"照明設備",co:"展晟照明（舞光 LED）",
-  offer:["照明規劃、選品到現場測試","商業、居家、工廠、戶外照明","約 5000 種常態庫存品項"],
-  ask:"有照明需求的設計師、統包、業主；照明批發業者",
-  tags:["照明","燈","燈具","LED","軌道燈","舞光","光源"],
-  note:""},
-
- {no:"103",name:"左沁靈 Sharing",title:"磁磚建材",co:"神銀建材資訊有限公司",
-  offer:["磁磚 SPC 最高 CP 值團購價","建案／公共工程建材配套","AI 智慧選材系統"],
-  ask:"建商、營造、室內設計師、包租代管有磁磚建材需求",
-  tags:["磁磚","建材","SPC","瓷磚","地磚","壁磚","選材"],
-  note:""},
-
- {no:"111",name:"郭哲宇 Brian",title:"房屋科技檢驗（驗屋）－北部",co:"沂樂生活科技有限公司",
-  offer:["預售屋、新成屋、中古屋、廠辦驗屋","房屋各項細節檢查","服務 2000+ 屋主"],
-  ask:"有交驗屋需求的個人／設計師、代銷、銀行貸款端",
-  tags:["驗屋","檢驗","檢測","交屋","驗收","瑕疵","房屋檢查"],
-  note:""},
-
- {no:"122",name:"鄭敦晉 Gene",title:"不動產律師－雙北",co:"敦洋法律事務所",
-  offer:["不動產民事、刑事訴訟","非訟合約、都更事業","中小企業、建設公司法律顧問"],
-  ask:"不動產民刑事案件、中小企業法律顧問、大型建設公司",
-  tags:["律師","法律","訴訟","合約","法律諮詢","糾紛","都更法律","官司"],
-  note:"客戶碰到合約糾紛、租賃／工程官司、產權問題找他。"},
-
- {no:"124",name:"陳容禎 Celine",title:"不動產估價師",co:"都昕（都市更昕）",
-  offer:["房屋、土地、廠房、店面、辦公室估價","都更權變估價模擬試算","台北市都更權變審查委員"],
-  ask:"房仲／商仲估價合作、律師／會計師／地政士、都更建商",
-  tags:["估價","估價師","鑑價","估值","都更估價","權變","不動產估價"],
-  note:""},
-
- {no:"039",name:"黃鈺琦 Rowan",title:"危老都更－雙北",co:"永業建築經理股份有限公司",
-  offer:["危老都更重建評估、結構評估","合建、委建全案整合興建一條龍","工程查核、履約保證、專款專用"],
-  ask:"雙北精華區可危老都更的地主及物件、整合團隊",
-  tags:["都更","危老","重建","改建","整合","地主","合建","結構評估"],
-  note:""},
-
- {no:"110",name:"孫士閔 Steven",title:"智慧家庭規劃",co:"費米股份有限公司",
-  offer:["智慧家庭客製規劃（2000+ 客戶）","IoT 設備落地（建案、辦公室、醫院）","AIoT 物聯網平台導入"],
-  ask:"想規劃智慧家庭的設計師、業主、建案、代銷",
-  tags:["智慧家庭","智能","IoT","智慧門鎖","電子鎖","智能家居","自動化","物聯網"],
-  note:"好厝一直想研究的智慧門鎖／電子鎖，可以先找他聊方案。"},
-
- {no:"092",name:"林典毅 Chance",title:"短影音代操盤",co:"流量製造所",
-  offer:["短影音代操、流量變現","個人／實體商家打造 IP","企業短影音內訓"],
-  ask:"需短影音投廣的電商品牌、想打造 IP 的個人或商家",
-  tags:["短影音","影片","reels","行銷","流量","自媒體","IP","拍片"],
-  note:""},
-
- {no:"009",name:"陳書緯 Peter",title:"高資產融資 / 投資",co:"中國信託銀行",
-  offer:["房屋、土地、金融資產週轉融資","高資產客戶金融資產投資","美國證券分析師 CFA"],
-  ask:"個人／公司融資或貸款需求、專業投資人（3000 萬以上淨值）",
-  tags:["融資","貸款","房貸","資金","週轉","銀行","投資","高資產"],
-  note:""}
+const GROUPS={A:"A｜大繼承·資產傳承",B:"B｜都更·資產活化",C:"C｜外商租賃·月短租",D:"D｜裝修·工班·AI建築",E:"E｜房地產內容·AI",H:"H｜健康·保險·高資產"};
+const P=[
+// A
+{no:"076",g:"A",n:"申瑩萱 Sally",t:"房仲-大安/中正",c:"信義房屋",o:"店面/商辦/隔套/預售/透天買賣、加速售屋",a:"大安中正、金華龍門學區買賣"},
+{no:"001",g:"A",n:"洪怡芳",t:"包租代管",c:"一方生活",o:"全台1500+包租代管房源、150+軟裝案",a:"各種裝修工班、老屋活化屋主、想月穩定金流的資金方"},
+{no:"002",g:"A",n:"何青馨",t:"人壽房產金融",c:"富邦人壽",o:"整批建案房貸、房貸減壓、債務規劃",a:"預售中古散戶房貸、建商整批貸款、多房者"},
+{no:"003",g:"A",n:"黃懷瑩 Hannah",t:"桃園軟裝設計",c:"瀅夏室內裝潢",o:"軟裝提升房價/出租價值、300+空間改造",a:"出租房投資客/包租代管、自住改造"},
+{no:"019",g:"A",n:"黃馨嬋 Sunny",t:"包租代管-雙和",c:"和和(貞和)",o:"中永和包租、老屋改造解漏水壁癌",a:"永和/古亭10分可長約包租物件、多屋屋主"},
+{no:"030",g:"A",n:"李世偉 Bob",t:"社宅租管-桃園",c:"遇凱管理",o:"社宅媒合管理3000+、整棟包租評估",a:"桃園有房找租客屋主、多房房東"},
+{no:"036",g:"A",n:"羅珮玉 Ruby",t:"土地資產傳承",c:"",o:"18年資產投資、土地投資與三代傳承",a:"5000萬以上資產想傳承、蓋過住二土地建商"},
+{no:"042",g:"A",n:"黃泓顥",t:"房貸減壓-北部",c:"富邦人壽",o:"房貸減壓、月現金流配置",a:"持有房地產者、包租代管業者、建商"},
+{no:"043",g:"A",n:"龔秋敏",t:"基金理財-中部",c:"富邦人壽",o:"基金配置、保單優化、房貸減壓、傳承",a:"強迫儲蓄、提高現金流、資產傳承"},
+{no:"048",g:"A",n:"陳逸凱 阿凱",t:"住宅室內設計-台北",c:"時治室內裝修",o:"住宅設計施工監造、豪宅/老屋翻修",a:"剛性購屋、老屋活化長輩、房仲代銷"},
+{no:"051",g:"A",n:"陳誌原 Neal",t:"包租代管-板橋",c:"好好相寓",o:"改造100+房間、軟裝/裝修/包租代管",a:"板橋租客、出租房仲、板橋房東"},
+{no:"072",g:"A",n:"黃靜愉",t:"包租代管-台南中西",c:"",o:"台南包租代管、老屋翻新隔套活化",a:"屋主/維修工班、整棟閒置可包租物件"},
+{no:"078",g:"A",n:"林裕翔 Shawn",t:"冷氣安裝保養維修-雙北",c:"聖芯工程",o:"冷暖氣/全熱交換/吊隱除濕、全廠牌",a:"營業單位大量安裝、設計師/建商/統包"},
+{no:"085",g:"A",n:"陳閔祥 James",t:"法商策略顧問",c:"睿律",o:"企業法律顧問、商業策略、ESG",a:"股權架構/期權、投資併購"},
+{no:"088",g:"A",n:"呂宥澄",t:"飯店專業施工(木作/防水)",c:"佑晟室內裝修",o:"飯店級木作、防水免拆廁所、晶華/新光/勞力士",a:"設計師/統包、連鎖飯店採購"},
+{no:"108",g:"A",n:"蔡明翰 Marco",t:"房仲-大林口A7-A9",c:"",o:"大林口買賣、海外置產、影音行銷",a:"大林口買賣、專任委託、豪宅委售"},
+{no:"119",g:"A",n:"劉吉振 Jimmy",t:"房產投資家-台北",c:"",o:"房產投資200+單位、竹科三期徵收地研究",a:"徵收地仲介、竹科三期重劃農地"},
+// B
+{no:"008",g:"B",n:"邱碩鈺 Ellie",t:"雙北房地產教學",c:"House123",o:"2500+學員、買房現金流/老屋改建教學",a:"都更危老潛力物件、高雄建商、協助跑地主夥伴"},
+{no:"006",g:"B",n:"戴龍睿 Brett",t:"商務中心-台北",c:"空白場域",o:"辦公/共享空間出租、借址登記、場地",a:"2-6人團隊/自由工作者、包租代管想了解商務中心、閒置商用不動產屋主"},
+{no:"009",g:"B",n:"陳書緯 Peter",t:"高資產投資/貸款",c:"中國信託",o:"房土金融資產融資、高資產投資(CFA)",a:"3000萬以上淨值專業投資人、高資產客戶"},
+{no:"011",g:"B",n:"姚巧玲 Amanda",t:"包租代管-士林",c:"舒室生活",o:"包租代管5年+、改造100+房間",a:"士林老屋活化屋主、高資產買房收租"},
+{no:"012",g:"B",n:"蘇家弘 Andre",t:"包租代管-北投",c:"舒室生活",o:"解決90%租客問題、水電配線丙級",a:"北投老屋活化屋主、長期Power Team"},
+{no:"020",g:"B",n:"王俐穎",t:"代租代管-台北東區",c:"佳宸管理顧問",o:"醫藥規格SOP代租代管、篩房客風險",a:"需代租代管屋主、整棟多戶"},
+{no:"024",g:"B",n:"林純純",t:"包租代管-大安南",c:"",o:"大安森林/台大/師大周邊包租代管、軟裝",a:"大安南區20坪+可包租、做包租代管的仲介"},
+{no:"026",g:"B",n:"林律吟 Rita",t:"室內設計-新竹",c:"起點空間設計",o:"空間規劃/客變/監工/軟裝",a:"新成屋/換屋、商空美業月子中心、新竹代銷驗屋房仲"},
+{no:"029",g:"B",n:"劉宜佳 Carol",t:"房產投資-高雄",c:"",o:"房產店面潛力評估、醫療人員就業",a:"海內外房產租賃資源、老屋重建組PT"},
+{no:"039",g:"B",n:"黃鈺琦 Rowan",t:"危老都更-雙北",c:"永業建築經理",o:"危老都更重建評估、合建委建全案整合",a:"雙北可危老都更地主物件、整合團隊"},
+{no:"040",g:"B",n:"白岳霖 Kelly",t:"住宅室內設計-台中",c:"墨妍制品",o:"設計/工程/客變/軟裝(乙級)",a:"房仲、裝修10-20萬/坪案、豪宅仲介建築師"},
+{no:"047",g:"B",n:"陳力羣 娃娃",t:"住宅室內設計-新北",c:"法拉利事業",o:"住宅設計/3D環景/老屋活化",a:"設計裝修業主、套房/老屋翻新、組PT"},
+{no:"050",g:"B",n:"林柏蒼 Kevin ★好厝",t:"出租屋輕裝修-雙北",c:"舒緻美(好厝)",o:"輕裝修統包/壁癌修繕/退租清空、最快整理到能租",a:"雙北房仲/個人房東、社宅/設計師、物管/包租代管大公司"},
+{no:"059",g:"B",n:"黃聖文",t:"住宅室內設計-台南",c:"萬澳制所",o:"動線/收納/3D(乙級)",a:"150萬/400萬預算自住客、台南指標建案"},
+{no:"064",g:"B",n:"劉怡吟 Yvonne",t:"法拍屋代標-北部",c:"104法拍網",o:"法拍代標/點交/持分分割/合夥投資",a:"法拍投資客、想撿便宜房的人"},
+{no:"075",g:"B",n:"黃彥銘 Ian",t:"土地開發-台北",c:"原構築",o:"都更整合/老屋重建/屋主自建一條龍",a:"老屋屋主都更評估、整合召集人、家族基地活化"},
+{no:"084",g:"B",n:"張濬池 Abner",t:"中小企業政府補助顧問-高雄",c:"榮富科技",o:"政府補助、青創鳳凰貸款、計畫書撰寫",a:"想申請補助貸款中小企業、銀行融資陪跑、加速器基地"},
+{no:"094",g:"B",n:"林怡均",t:"企業AI數位轉型(ERP)",c:"耕碩科技",o:"包租代管ERP、AI找重複工作自動化",a:"管50戶+代管、大量Excel人工企業、數位轉型中大企業"},
+{no:"096",g:"B",n:"王文子 Wannie",t:"資產活化買房投資-高雄",c:"",o:"營養師/採購委員、置產10年+",a:"投資房產專家房仲、資深代書、建商"},
+{no:"098",g:"B",n:"林鉦澤 阿信",t:"房仲-三重蘆洲",c:"住商不動產",o:"15年、100+戶成交",a:"三重蘆洲委託銷售、指定買房客、急買賣"},
+{no:"099",g:"B",n:"簡麒倫",t:"包租代管(隔套)-台中",c:"",o:"中部包租代管15年、1000案",a:"老舊套房包租、透天大坪數隔套屋主、合建地主"},
+{no:"106",g:"B",n:"范藝馨",t:"理財型房貸",c:"台北富邦銀行",o:"理財型/回復型房貸",a:"房仲代書保險、需用房子增加資金客戶"},
+{no:"111",g:"B",n:"郭哲宇 Brian",t:"房屋科技檢驗(驗屋)-北部",c:"沂樂生活科技",o:"預售/新成/中古/廠辦驗屋、2000+",a:"交驗屋需求、代銷/銀行貸款端、建設公司"},
+{no:"112",g:"B",n:"廖音策 Ethan",t:"停車場經營加盟",c:"全國專業開發",o:"停車場加盟、年毛利30%+",a:"有土地想投資被動收入、想做停車場的人"},
+{no:"113",g:"B",n:"林志杰",t:"企業壓力管理教練",c:"",o:"超覺靜坐、20分深度休息",a:"高工作強度者、想給員工恢復力老闆、竹科/北部醫院"},
+{no:"120",g:"B",n:"翁仁川",t:"不動產買賣-大直",c:"大師國際不動產",o:"雙北豪宅/辦公/店面/土地、資產活化",a:"想賣/換屋/出租、7000萬+家庭、上億企業主"},
+{no:"122",g:"B",n:"鄭敦晉 Gene",t:"不動產律師-雙北",c:"敦洋法律事務所",o:"不動產民刑事/合約/都更訴訟",a:"不動產案件、中小企業法顧、建設公司法顧"},
+{no:"123",g:"B",n:"陳俊瑋 Oscar",t:"包租代管-內湖",c:"緣起生活共生宅",o:"包租代管6年、改造80房、老屋改造軟裝",a:"優質租客、內湖老屋活化屋主、整棟大房東"},
+{no:"124",g:"B",n:"陳容禎 Celine",t:"不動產估價師",c:"都昕",o:"各類不動產估價、都更權變估價、審查委員",a:"房仲商仲估價、律師會計地政士、都更建商"},
+// C
+{no:"073",g:"C",n:"蔡宜靜 Ronda",t:"包租代管-新竹",c:"初初不動產",o:"新竹竹北包租代管、外商工程師短期租賃",a:"新竹竹北房東、包租/租賃仲介夥伴、商務租屋公司"},
+{no:"060",g:"C",n:"林稼諭 Jessica",t:"包租代管-新北三重",c:"禾楓商務",o:"外商找禾楓、外商研發團隊20年經驗",a:"三重捷運10分屋主/仲介、外商留學生租房"},
+{no:"055",g:"C",n:"唐靖童 Amy",t:"辦公室租賃-台北中山松山信義",c:"輝旺不動產",o:"商辦分析/媒合/談判/設計規劃、10年",a:"30-100坪/100-500坪辦公需求、商仲人才組隊"},
+{no:"061",g:"C",n:"張簡筱凡",t:"房仲-新加坡",c:"",o:"新加坡買賣租投資、組屋公寓新案、店面廠房",a:"新加坡房產交易、企業租賃買賣、外國人投資"},
+// D
+{no:"028",g:"D",n:"周擇宇 Fennix",t:"系統櫃-台灣中部",c:"開箱子系統家居",o:"全屋系統櫃訂製/統包(乙級)",a:"設計師/統包/建築師、新建案團購"},
+{no:"004",g:"D",n:"黃齡毅 Melody",t:"雙北軟裝設計",c:"星毅設計",o:"住宅商空軟裝、空屋軟裝提升售租(Airbnb)",a:"輕裝修屋主、投資客/包租代管、品牌空間"},
+{no:"010",g:"D",n:"張榮均 Jimmy",t:"新莊商務中心",c:"苡融創新商務中心",o:"工商登記250+/虛擬辦公/包租資產活化",a:"公司登記地址、1-10人辦公、雙北會計師記帳士"},
+{no:"017",g:"D",n:"方建勛 Vincent",t:"消毒除蟲",c:"極淨環衛",o:"白蟻防治/消毒/鼠害/甲醛檢測",a:"新舊屋消毒/白蟻/除甲醛、餐飲設計師裝修包租代管長期"},
+{no:"045",g:"D",n:"何欣哲 Cliff",t:"新成屋輕裝修-北北桃",c:"序物制所",o:"50-150萬新成屋輕裝修、AI×SOP數位管理",a:"快交屋裝修屋主、建案社區團購"},
+{no:"057",g:"D",n:"Josh HUNG",t:"鋁製內外遮陽",c:"永安鋁製品",o:"鋁製遮陽/百葉/窗簾軌道、澳洲10年",a:"建築師/窗飾/建商、鋁製品工廠、窗飾集團採購"},
+{no:"063",g:"D",n:"王勝仟",t:"水電工程-雙北",c:"勝曜",o:"配電/全室電線汰換/給排水/衛浴/冷氣安裝",a:"租屋代管/老屋翻修/設計師/統包"},
+{no:"069",g:"D",n:"陳百毅 Billy",t:"軟裝設計-台中",c:"謙毅設計",o:"專做租屋設計、秒租快裝包、三天完工",a:"中古/新成屋屋主投資客、建商交屋送軟裝"},
+{no:"087",g:"D",n:"謝慈軒",t:"100%回收材料製造",c:"綠晶木/築角設計",o:"環保零甲醛建材、隔間牆/輕質磚/隔音隔熱防霉",a:"零甲醛消費者、建材經銷/景觀建築師/設計師/統包、公共建築"},
+{no:"091",g:"D",n:"黃振呈 Zayn",t:"空調設備品牌廠",c:"莎普羅 SAPORO",o:"變頻冷氣/除濕機/全熱交換、30年",a:"冷氣經銷工程行、中南部經銷、建商連鎖採購"},
+{no:"097",g:"D",n:"顏敏哲",t:"建築執照顧問/違建處理",c:"禾域建築",o:"合法變更/裝修執照、套雅房合格證、違建諮詢",a:"設計/裝修/資產管理/建設公司、知名企業大型專案"},
+{no:"101",g:"D",n:"林雨軒 Sean",t:"合法隔套設計施工",c:"富品創毅",o:"合法套房/老屋活化/一條龍代管",a:"公寓透天合法隔套屋主、閒置透天包租、高投報隔套投資客"},
+{no:"102",g:"D",n:"唐瑋 Oma",t:"旅館/商業/收益型設計",c:"豹典室內設計",o:"旅宿商空設計、一條龍、財務預算",a:"共生公寓/透天改造、旅館設計、整棟旅館頂讓"},
+{no:"103",g:"D",n:"左沁靈 Sharing",t:"磁磚建材",c:"神銀建材",o:"磁磚SPC團購價、AI智慧選材、建案配套",a:"建商營造設計師包租代管、自動化建築機器人"},
+{no:"105",g:"D",n:"陳震 AK",t:"紫微風水命理顧問",c:"",o:"紫微斗數/陽宅風水",a:"論命風水、設計師/餐飲顧問/代銷/Podcast、企業廠辦"},
+{no:"109",g:"D",n:"顏羽宏 Allen",t:"照明設備",c:"展晟照明(舞光LED)",o:"照明規劃選品、3000家經銷、5000品項",a:"設計師統包業主、照明批發、公共工程建案社宅"},
+{no:"110",g:"D",n:"孫士閔 Steven",t:"智慧家庭規劃",c:"費米",o:"智慧家庭2000+、IoT/AIoT平台",a:"設計師業主、建案代銷、想進IoT企業"},
+{no:"114",g:"D",n:"簡亞芮 MOMO",t:"拆除清運-雙北",c:"咏鑫工程行",o:"新建案/老屋/店面拆除、無塵拆除",a:"統包/設計師/屋主、危老拆除建設公司"},
+{no:"115",g:"D",n:"蔡宛怡",t:"(資料待補)",c:"",o:"",a:""},
+{no:"118",g:"D",n:"許智絜",t:"租管智能數位化顧問",c:"Bananas 租賃管理系統",o:"租賃管理系統、150+業者3萬用戶、智能門鎖訂閱",a:"想增加收入的仲介/代管業者"},
+// E
+{no:"092",g:"E",n:"林典毅 Chance",t:"短影音代操盤",c:"流量製造所",o:"短影音代操/流量變現",a:"電商品牌投廣、想打造IP的個人/商家"},
+{no:"037",g:"E",n:"廖士鈞 Berry",t:"資產活化觀光旅宿",c:"人客多",o:"旅宿土地資產活化/管理顧問/自媒體",a:"數位遊牧者、旅宿品牌/包棟、土地建物活化成旅宿"},
+{no:"049",g:"E",n:"陳昱維 Tony",t:"宜蘭民宿平台",c:"參嶼集宿",o:"宜蘭8間包棟民宿、閒置空屋活化",a:"慶生聚會包棟、公司團建婚顧旅行社、閒置空屋屋主"},
+{no:"067",g:"E",n:"丁乃玉 Margaret",t:"澳洲房地產投資講師",c:"博泰民安 PTMA",o:"澳洲買房/配置/永居/留遊學一條龍",a:"澳洲置業移民留學客、海外房產仲介、家族基金"},
+{no:"070",g:"E",n:"沈琳朣 Sophia",t:"法拍屋代標-中部",c:"優室法拍屋",o:"中部法拍代標/點交/持分/合夥",a:"法拍投資客"},
+{no:"071",g:"E",n:"王瑀 Eva",t:"企業形象官網架設",c:"齊飛管理顧問",o:"品牌網站/SEO/CIS/logo",a:"網站需求企業/品牌、醫療/外銷/中小企業、上市櫃創投"},
+{no:"080",g:"E",n:"游曉瑄 Charming",t:"Meta 廣告投放",c:"沐光行銷",o:"廣告操盤9年、2億+、年度廣告健檢",a:"想做廣告健檢/優化公司、企業內訓行銷團隊"},
+{no:"100",g:"E",n:"廖宜勤 Daniel",t:"影像直播",c:"再創造廣告",o:"多機直播/品牌活動紀錄、政府機關客戶",a:"協會/教育訓練錄影直播、品牌長期影音"},
+{no:"116",g:"E",n:"沈道廷",t:"媒體形象與人設定位顧問",c:"澳堤數位行銷",o:"指標媒體曝光/品牌定位/AI SEO",a:"想快速被看到專家品牌、連鎖加盟/二代接班、創投孵化器"},
+{no:"121",g:"E",n:"蔡昊睿 Eric",t:"線上課程/知識變現",c:"眾曜智庫",o:"線上課程規劃/跨平台流量變現",a:"實體轉線上講師顧問、有流量缺變現專家、大型培訓機構"},
+{no:"126",g:"E",n:"蕭家靖 Peter",t:"房地產企業陪跑顧問",c:"圖睿管理顧問",o:"房仲/包租代管老闆陪跑、地政士",a:"0-1小老闆、10-30人擴張、連鎖加盟總部"},
+// H
+{no:"083",g:"H",n:"杜佳曄 杜杜",t:"藥局-桃園",c:"家福聯合藥局",o:"健康諮詢/慢性病/居家藥師/長照",a:"三高/失眠/美食者、易感冒手腳冰冷、在地產業鏈"},
+{no:"005",g:"H",n:"鄭博元",t:"整理收納平台",c:"居家整聊室",o:"整理收納/搬家/B2B清潔/廢棄物清運、加盟/培訓/GUDO系統",a:"想學整理師/家裡亂、清潔搬家裝修除蟲、想加盟者"},
+{no:"027",g:"H",n:"邱梅鈴 Mei",t:"彩妝教學-桃園雙北",c:"欣宬國際",o:"新娘/證件造型/公益彩妝教學",a:"整體彩妝、學員、美妝品牌合作"},
+{no:"038",g:"H",n:"陳乙嘉 Iris",t:"產險-北部",c:"富邦人壽",o:"房屋產險/裝修工程/車險/資產保全",a:"進口車主、房東里長、建商"},
+{no:"046",g:"H",n:"陳貞茹 VIVI",t:"積木式鋁櫃/車宿",c:"",o:"免鑽孔車宿改裝、400+案例",a:"車宿車友、改裝車主、SUV/MPV經銷"},
+{no:"053",g:"H",n:"林易增 Eason",t:"美潔盾地板建材",c:"美潔盾",o:"日本緩衝地板、防跌保護、名古屋大學驗證",a:"緩衝地板需求、安全場域設計師、長照護理之家"},
+{no:"058",g:"H",n:"羅豪偉 Paul",t:"長照空間規劃-全台",c:"居安照護",o:"無障礙空間/輔具設備",a:"65歲+家庭、骨科/醫材/居服員、社區管委會企業福委"},
+{no:"107",g:"H",n:"康洋銘 康康",t:"冷氣異味處理-桃竹苗",c:"享酷 AIR CARE+",o:"冷氣深度清洗、奈米臭氧、5000台+",a:"冷氣異味/滴水/發霉、月子中心幼兒園、營業用保養"},
+{no:"125",g:"H",n:"黃柏元",t:"長照醫療規劃",c:"南山人壽",o:"長照風險規劃/稅務傳承",a:"政府補助長照家庭、企業長照講座、贈與遺產稅務"}
 ];
-
-// ===== 畫面 =====
-const list=document.getElementById('list');
-const q=document.getElementById('q');
-const clearBtn=document.getElementById('clear');
-const countEl=document.getElementById('count');
-const chipsEl=document.getElementById('chips');
-const EXAMPLES=["違建","建築師","水電","冷氣","除蟲","拆除","驗屋","律師","軟裝","都更","估價","智慧門鎖","照明","磁磚"];
-
-function searchable(p){
-  return [p.no,p.name,p.title,p.co,p.offer.join(" "),p.ask,p.tags.join(" ")].join(" ").toLowerCase();
-}
-function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
-function hl(s,terms){
-  let out=esc(s);
-  terms.filter(t=>t).forEach(t=>{
-    const re=new RegExp("("+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+")","gi");
-    out=out.replace(re,"<mark>$1</mark>");
-  });
-  return out;
-}
+const list=document.getElementById('list'),q=document.getElementById('q'),clearBtn=document.getElementById('clear'),countEl=document.getElementById('count'),chipsEl=document.getElementById('chips');
+let grp="";
+const CHIPS=[["","全部"],["A","A 大繼承"],["B","B 都更"],["C","C 外商租賃"],["D","D 裝修工班"],["E","E 內容AI"],["H","H 健康保險"]];
+function sx(p){return [p.no,p.n,p.t,p.c,p.o,p.a].join(" ").toLowerCase();}
+function esc(s){return (s||"").replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function hl(s,ts){let o=esc(s);ts.filter(Boolean).forEach(t=>{o=o.replace(new RegExp("("+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+")","gi"),"<mark>$1</mark>");});return o;}
 function render(){
-  const raw=q.value.trim().toLowerCase();
-  const terms=raw.split(/\s+/).filter(Boolean);
+  const raw=q.value.trim().toLowerCase(),ts=raw.split(/\s+/).filter(Boolean);
   clearBtn.style.display=raw?"block":"none";
-  let res=PEOPLE;
-  if(terms.length){
-    res=PEOPLE.filter(p=>{const s=searchable(p);return terms.every(t=>s.includes(t));});
-  }
-  countEl.textContent = raw ? `找到 ${res.length} 位` : `章節共 ${PEOPLE.length} 位（範例）`;
-  if(!res.length){
-    list.innerHTML=`<div class="empty"><b>目前章節沒有「${esc(q.value.trim())}」這個資源</b><br>
-      正式版的阿凱會這樣回你，並建議：要不要我幫你去問章節有沒有人認識？或把這個需求記起來，有新夥伴進來就提醒你。</div>`;
-    return;
-  }
-  list.innerHTML=res.map(p=>`
-    <div class="person">
-      <div class="ptop"><span class="pname">${hl(p.name,terms)}</span><span class="pno">NO.${p.no}</span></div>
-      <div class="ptitle">${hl(p.title,terms)}</div>
-      <div class="pco">${hl(p.co,terms)}</div>
-      <div class="sec"><div class="lbl">他能提供（本週我有／專業）</div>
-        <ul class="offer">${p.offer.map(o=>`<li>${hl(o,terms)}</li>`).join("")}</ul></div>
-      <div class="sec"><div class="lbl">他在找（引薦需求）</div>
-        <div class="ask">${hl(p.ask,terms)}</div></div>
-      <div class="tags">${p.tags.map(t=>`<span class="tag">${hl(t,terms)}</span>`).join("")}</div>
-      ${p.note?`<div class="note"><span class="nl">你的 121 筆記</span>${esc(p.note)}</div>`:``}
-      <div class="contact">BNI 編號 <b>${p.no}</b> ｜ 電話 <b>（範例，正式版自動帶）</b></div>
-    </div>`).join("")+`<div class="foot">這是範例，用章節簡報真實資料做的。正式版：你用「講的」記 121、電話自動帶、可跨好厝客戶資料一起查。</div>`;
+  let r=P.filter(p=>!grp||p.g===grp);
+  if(ts.length)r=r.filter(p=>{const s=sx(p);return ts.every(t=>s.includes(t));});
+  countEl.textContent=(grp?GROUPS[grp]+"・":"")+(raw?`找到 ${r.length} 位`:`共 ${r.length} 位`);
+  if(!r.length){list.innerHTML=`<div class="empty">沒有符合「${esc(q.value.trim())}」的夥伴，換個詞試試</div>`;return;}
+  list.innerHTML=r.map(p=>`<div class="p">
+    <div class="ptop"><span class="pname">${hl(p.n,ts)}</span><span class="pno">NO.${p.no}</span><span class="pgrp">${p.g}組</span></div>
+    <div class="ptitle">${hl(p.t,ts)}</div>${p.c?`<div class="pco">${hl(p.c,ts)}</div>`:``}
+    ${p.o?`<div class="sec"><div class="lbl">能提供</div><div class="offer">${hl(p.o,ts)}</div></div>`:``}
+    ${p.a?`<div class="sec"><div class="lbl">在找</div><div class="ask">${hl(p.a,ts)}</div></div>`:``}
+  </div>`).join("")+`<div class="foot">資料整理自分會「依產業鏈分組」簡報，僅供會內引薦參考。<br>好厝 阿凱 整理</div>`;
 }
-chipsEl.innerHTML=EXAMPLES.map(e=>`<button class="chip">${e}</button>`).join("");
-chipsEl.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{q.value=b.textContent;render();q.scrollIntoView({block:'start'});});
+chipsEl.innerHTML=CHIPS.map(([v,l])=>`<button class="chip${v===grp?' on':''}" data-g="${v}">${l}</button>`).join("");
+chipsEl.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{grp=b.dataset.g;chipsEl.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x.dataset.g===grp));render();});
 clearBtn.onclick=()=>{q.value="";render();q.focus();};
-q.addEventListener('input',render);
-render();
+q.addEventListener('input',render);render();
 </script>
 </body>
 </html>
